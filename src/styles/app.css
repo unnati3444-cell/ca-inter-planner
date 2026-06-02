@@ -1,0 +1,137 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:#07111f;
+  color:white;
+  font-family:Inter,system-ui,sans-serif;
+}
+
+.app-layout{
+  display:flex;
+  min-height:100vh;
+}
+
+.sidebar{
+  width:260px;
+  background:#0d1b2a;
+  border-right:1px solid rgba(255,255,255,.08);
+  padding:24px;
+}
+
+.logo{
+  color:#d4af37;
+  font-size:24px;
+  font-weight:700;
+  margin-bottom:32px;
+}
+
+nav{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.nav-btn{
+  background:transparent;
+  border:none;
+  color:white;
+  text-align:left;
+  padding:14px;
+  border-radius:12px;
+  cursor:pointer;
+  display:flex;
+  gap:12px;
+  font-size:15px;
+}
+
+.nav-btn:hover{
+  background:#13263d;
+}
+
+.nav-btn.active{
+  background:#d4af37;
+  color:black;
+  font-weight:700;
+}
+
+.main-content{
+  flex:1;
+  padding:32px;
+}
+
+.page-card{
+  background:#0d1b2a;
+  border-radius:18px;
+  padding:24px;
+  border:1px solid rgba(255,255,255,.08);
+}
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+  margin-top:20px;
+  margin-bottom:20px;
+}
+
+.stat-card{
+  background:#0d1b2a;
+  border:1px solid rgba(212,175,55,.25);
+  border-radius:18px;
+  padding:20px;
+}
+
+.stat-card h3{
+  color:#d4af37;
+  margin-bottom:12px;
+}
+
+.page-card{
+  margin-bottom:20px;
+}
+.subject-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:10px;
+}
+.form-group{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top:18px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+  background:#13263d;
+  color:white;
+  border:none;
+  padding:12px;
+  border-radius:10px;
+}
+
+.gold-btn{
+  margin-top:20px;
+  background:#d4af37;
+  color:black;
+  border:none;
+  padding:14px 20px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:700;
+}
+.danger-btn{
+  margin-top:20px;
+  background:#e74c3c;
+  color:white;
+  border:none;
+  padding:14px 20px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:700;
+}
