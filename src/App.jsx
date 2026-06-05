@@ -64,6 +64,14 @@ export default function App() {
       logs: [...prev.logs, log],
     }));
   };
+  const deleteLog = (id) => {
+  setAppData((prev) => ({
+    ...prev,
+    logs: prev.logs.filter(
+      (log) => log.id !== id
+    ),
+  }));
+};
 
   const updateTargetDate = (date) => {
     setAppData((prev) => ({
@@ -86,6 +94,7 @@ export default function App() {
     appData,
     updateProgress,
     addLog,
+    deleteLog,
     updateTargetDate,
     resetAllData,
   };

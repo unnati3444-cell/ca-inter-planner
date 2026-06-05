@@ -3,6 +3,8 @@ import { SUBJECTS } from "../data/subjects";
 
 export default function DailyLog({
   addLog,
+  deleteLog,
+  appData,
 }) {
   const today = new Date()
     .toISOString()
@@ -150,6 +152,75 @@ export default function DailyLog({
       >
         Save Study Log
       </button>
+      <hr
+  style={{
+    marginTop: 30,
+    marginBottom: 20,
+    borderColor: "#333",
+  }}
+/>
+
+<h2>Saved Logs</h2>
+
+{appData.logs
+  .slice()
+  .reverse()
+  .map((log) => (
+    <div
+      key={log.id}
+      style={{
+        background: "#13263d",
+        padding: 12,
+        marginTop: 12,
+        borderRadius: 10,
+      }}
+    >
+      <div>
+        <b>{log.subject}</b>
+      </div>
+
+      <div>
+        Date: {log.date}
+      </div>
+
+      <div>
+        Lectures: {log.lectures}
+      </div>
+
+      <div>
+        Hours: {log.hours}
+      </div>
+
+      {log.notes && (
+        <div>
+          Notes: {log.notes}
+        </div>
+      )}
+
+      <button
+        style={{
+          marginTop: 10,
+          background: "#e74c3c",
+          color: "white",
+          border: "none",
+          padding: "8px 12px",
+          borderRadius: 8,
+          cursor: "pointer",
+        }}
+        onClick={() => {
+          if (
+            window.confirm(
+              "Delete this log?"
+            )
+          ) {
+            deleteLog(log.id);
+          }
+        }}
+      >
+        🗑 Delete
+      </button>
+    </div>
+  ))}
     </div>
   );
 }
