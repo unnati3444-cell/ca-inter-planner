@@ -91,7 +91,6 @@ color: "#000",
 >
 📖 Daily Log </h1>
 
-```
   <div
     style={{
       display: "grid",
