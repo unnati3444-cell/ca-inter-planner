@@ -16,6 +16,8 @@ const [logs, setLogs] = useState([]);
 const [subject, setSubject] = useState("");
 const [lectures, setLectures] = useState("");
 const [remarks, setRemarks] = useState("");
+const isMobile =
+  window.innerWidth < 768;
 
 useEffect(() => {
 const saved = localStorage.getItem(
@@ -95,7 +97,9 @@ color: "#000",
     style={{
       display: "grid",
       gridTemplateColumns:
-        "repeat(2,1fr)",
+  isMobile
+    ? "1fr"
+    : "repeat(2,1fr)",
       gap: 20,
       marginBottom: 24,
     }}
@@ -178,7 +182,9 @@ color: "#000",
       style={{
         display: "grid",
         gridTemplateColumns:
-          "1fr 1fr",
+  isMobile
+    ? "1fr"
+    : "1fr 1fr",
         gap: 16,
       }}
     >
@@ -269,10 +275,16 @@ color: "#000",
         boxShadow:
           "0 4px 12px rgba(0,0,0,.08)",
         display: "flex",
-        justifyContent:
-          "space-between",
-        alignItems:
-          "flex-start",
+flexDirection:
+  isMobile
+    ? "column"
+    : "row",
+justifyContent:
+  "space-between",
+alignItems:
+  isMobile
+    ? "stretch"
+    : "flex-start",
       }}
     >
       <div>
@@ -322,6 +334,13 @@ color: "#000",
         }
         style={{
           background: "#ef4444",
+          marginTop:
+  isMobile ? 12 : 0,
+
+width:
+  isMobile
+    ? "100%"
+    : "auto",
           color: "white",
           border: "none",
           padding:

@@ -20,6 +20,8 @@ export default function PlannerTab() {
     useState("");
   const [completedLectures, setCompletedLectures] =
     useState("");
+  const isMobile =
+  window.innerWidth < 768;
 
   useEffect(() => {
     const savedSubjects =
@@ -158,7 +160,9 @@ export default function PlannerTab() {
         style={{
           display: "grid",
           gridTemplateColumns:
-            "repeat(4,1fr)",
+  isMobile
+    ? "1fr 1fr"
+    : "repeat(4,1fr)",
           gap: 20,
           marginBottom: 24,
         }}
@@ -207,7 +211,9 @@ export default function PlannerTab() {
           style={{
             display: "grid",
             gridTemplateColumns:
-              "2fr 1fr 1fr auto",
+  isMobile
+    ? "1fr"
+    : "2fr 1fr 1fr auto",
             gap: 12,
           }}
         >
@@ -345,11 +351,17 @@ export default function PlannerTab() {
               <div
                 style={{
                   display:
-                    "flex",
-                  justifyContent:
-                    "space-between",
-                  alignItems:
-                    "center",
+  "flex",
+flexDirection:
+  isMobile
+    ? "column"
+    : "row",
+justifyContent:
+  "space-between",
+alignItems:
+  isMobile
+    ? "stretch"
+    : "center",
                 }}
               >
                 <div>
@@ -447,6 +459,13 @@ export default function PlannerTab() {
                   style={{
                     background:
                       "#ef4444",
+                    marginTop:
+  isMobile ? 12 : 0,
+
+width:
+  isMobile
+    ? "100%"
+    : "auto",
                     color:
                       "white",
                     border:

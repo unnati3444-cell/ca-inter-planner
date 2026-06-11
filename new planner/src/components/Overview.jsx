@@ -8,6 +8,9 @@ export default function Overview() {
   const [logs, setLogs] =
     useState([]);
 
+  const isMobile =
+  window.innerWidth < 768;
+
   const [targetDateValue, setTargetDateValue] =
     useState(
       localStorage.getItem(
@@ -226,7 +229,10 @@ export default function Overview() {
         <div
           style={{
             display: "flex",
-            gap: 12,
+            flexDirection: isMobile
+             ? "column"
+             : "row",
+             gap: 12,
             marginTop: 16,
           }}
         >
@@ -273,7 +279,9 @@ export default function Overview() {
         style={{
           display: "grid",
           gridTemplateColumns:
-            "repeat(4,1fr)",
+          isMobile
+           ? "1fr 1fr"
+           : "repeat(4,1fr)",
           gap: 20,
           marginBottom: 24,
         }}
@@ -307,7 +315,9 @@ export default function Overview() {
         style={{
           display: "grid",
           gridTemplateColumns:
-            "repeat(4,1fr)",
+          isMobile
+           ? "1fr 1fr"
+            :"repeat(4,1fr)",
           gap: 20,
           marginBottom: 24,
         }}
@@ -368,7 +378,9 @@ export default function Overview() {
           style={{
             display: "grid",
             gridTemplateColumns:
-              "1fr 1fr",
+            isMobile
+             ? "1fr"
+             : "1fr 1fr",
             gap: 20,
             marginTop: 16,
           }}
