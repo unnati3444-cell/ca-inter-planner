@@ -8,18 +8,20 @@ import InsightsTab from "./components/InsightsTab";
 import "./App.css";
 
 function App() {
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] =
+    useState("overview");
 
-  const daysToTarget = 50;
-  const totalRemaining = 277;
-  const paceNeeded = 5.5;
-  const totalDone = 33;
-  const totalTotal = 310;
+  const isMobile =
+    window.innerWidth < 768;
 
   return (
     <div
       style={{
         display: "flex",
+        flexDirection:
+          isMobile
+            ? "column"
+            : "row",
         minHeight: "100vh",
         background: "#f3f4f6",
       }}
@@ -33,21 +35,36 @@ function App() {
         style={{
           flex: 1,
           overflowY: "auto",
-          padding: 20,
+          padding:
+            isMobile
+              ? 10
+              : 20,
         }}
       >
-        {activeTab === "overview" && (
-          <Overview
-            />
+        {activeTab ===
+          "overview" && (
+          <Overview />
         )}
 
-        {activeTab === "daily" && <DailyLog />}
+        {activeTab ===
+          "daily" && (
+          <DailyLog />
+        )}
 
-        {activeTab === "topics" && <TopicsTab />}
+        {activeTab ===
+          "topics" && (
+          <TopicsTab />
+        )}
 
-        {activeTab === "planner" && <PlannerTab />}
+        {activeTab ===
+          "planner" && (
+          <PlannerTab />
+        )}
 
-        {activeTab === "insights" && <InsightsTab />}
+        {activeTab ===
+          "insights" && (
+          <InsightsTab />
+        )}
       </div>
     </div>
   );
