@@ -8,6 +8,13 @@ export default function Overview() {
   const [logs, setLogs] =
     useState([]);
 
+  const [targetDateValue, setTargetDateValue] =
+    useState(
+      localStorage.getItem(
+        "targetDate"
+      ) || "2026-07-31"
+    );
+
   useEffect(() => {
     const savedSubjects =
       JSON.parse(
@@ -89,7 +96,7 @@ export default function Overview() {
 
   const targetDate =
     new Date(
-      "2026-07-31"
+      targetDateValue
     );
 
   const today = new Date();
@@ -179,6 +186,16 @@ export default function Overview() {
     }
   }
 
+  const saveTargetDate =
+    () => {
+      localStorage.setItem(
+        "targetDate",
+        targetDateValue
+      );
+
+      window.location.reload();
+    };
+
   return (
     <div
       style={{
@@ -186,6 +203,71 @@ export default function Overview() {
       }}
     >
       <NotesBoard />
+
+      <div
+        style={{
+          background: "white",
+          borderRadius: 16,
+          padding: 24,
+          marginBottom: 24,
+          boxShadow:
+            "0 4px 12px rgba(0,0,0,.08)",
+        }}
+      >
+        <h2
+          style={{
+            color: "#000",
+            marginTop: 0,
+          }}
+        >
+          🎯 Target Date
+        </h2>
+
+        <div
+          style={{
+            display: "flex",
+            gap: 12,
+            marginTop: 16,
+          }}
+        >
+          <input
+            type="date"
+            value={
+              targetDateValue
+            }
+            onChange={(e) =>
+              setTargetDateValue(
+                e.target.value
+              )
+            }
+            style={{
+              padding: 12,
+              border:
+                "1px solid #d1d5db",
+              borderRadius: 10,
+            }}
+          />
+
+          <button
+            onClick={
+              saveTargetDate
+            }
+            style={{
+              background:
+                "#4f46e5",
+              color: "white",
+              border: "none",
+              padding:
+                "12px 20px",
+              borderRadius: 10,
+              cursor:
+                "pointer",
+            }}
+          >
+            Save Target
+          </button>
+        </div>
+      </div>
 
       <div
         style={{
@@ -232,7 +314,15 @@ export default function Overview() {
       >
         <StatCard
           title="Target Date"
-          value="31 Jul"
+          value={new Date(
+            targetDateValue
+          ).toLocaleDateString(
+            "en-GB",
+            {
+              day: "2-digit",
+              month: "short",
+            }
+          )}
           color="#dc2626"
         />
 
@@ -378,8 +468,9 @@ export default function Overview() {
           }}
         >
           {totalCompleted} /{" "}
-          {totalPlanned} lectures
-          completed
+          {totalPlanned}
+          {" "}
+          lectures completed
         </div>
       </div>
     </div>
