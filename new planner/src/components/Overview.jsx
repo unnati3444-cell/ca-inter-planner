@@ -55,38 +55,14 @@ export default function Overview() {
     );
 
   const totalCompleted =
-    subjects.reduce(
-      (sum, subject) => {
-        const dailyLogCompleted =
-          logs
-            .filter(
-              (log) =>
-                log.subject ===
-                subject.name
-            )
-            .reduce(
-              (
-                lectureSum,
-                log
-              ) =>
-                lectureSum +
-                Number(
-                  log.lectures || 0
-                ),
-              0
-            );
-
-        return (
-          sum +
-          Number(
-            subject.completedLectures ||
-              0
-          ) +
-          dailyLogCompleted
-        );
-      },
-      0
-    );
+  subjects.reduce(
+    (sum, subject) =>
+      sum +
+      Number(
+        subject.completedLectures || 0
+      ),
+    0
+  );
 
   const totalRemaining =
     Math.max(
