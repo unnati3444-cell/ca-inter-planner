@@ -11,6 +11,13 @@ export default function Overview() {
   const isMobile =
   window.innerWidth < 768;
 
+  const [startDateValue, setStartDateValue] =
+    useState(
+      localStorage.getItem(
+        "startDate"
+      ) || "2026-06-01"
+    );
+
   const [targetDateValue, setTargetDateValue] =
     useState(
       localStorage.getItem(
@@ -104,6 +111,18 @@ export default function Overview() {
 
   const today = new Date();
 
+  const startDate =
+    new Date(startDateValue);
+
+  const daysStudied =
+    Math.max(
+      Math.ceil(
+        (today - startDate) /
+          (1000 * 60 * 60 * 24)
+      ),
+      1
+    );
+
   const daysRemaining =
     Math.max(
       Math.ceil(
@@ -126,16 +145,10 @@ export default function Overview() {
       : "0";
 
   const currentPace =
-    daysRemaining > 0
-      ? (
-          totalCompleted /
-          Math.max(
-            1,
-            365 -
-              daysRemaining
-          )
-        ).toFixed(1)
-      : "0";
+    (
+      totalCompleted /
+      daysStudied
+    ).toFixed(1);
 
   let forecastText =
     "Not enough data";
@@ -189,14 +202,17 @@ export default function Overview() {
     }
   }
 
-  const saveTargetDate =
+  const saveDates =
     () => {
+      localStorage.setItem(
+        "startDate",
+        startDateValue
+      );
+
       localStorage.setItem(
         "targetDate",
         targetDateValue
       );
-
-      window.location.reload();
     };
 
   return (
@@ -223,7 +239,7 @@ export default function Overview() {
             marginTop: 0,
           }}
         >
-          🎯 Target Date
+          🎯 Study Dates
         </h2>
 
         <div
@@ -236,6 +252,24 @@ export default function Overview() {
             marginTop: 16,
           }}
         >
+          <input
+            type="date"
+            value={
+              startDateValue
+            }
+            onChange={(e) =>
+              setStartDateValue(
+                e.target.value
+              )
+            }
+            style={{
+              padding: 12,
+              border:
+                "1px solid #d1d5db",
+              borderRadius: 10,
+            }}
+          />
+
           <input
             type="date"
             value={
@@ -256,7 +290,7 @@ export default function Overview() {
 
           <button
             onClick={
-              saveTargetDate
+              saveDates
             }
             style={{
               background:
@@ -270,7 +304,7 @@ export default function Overview() {
                 "pointer",
             }}
           >
-            Save Target
+            Save Dates
           </button>
         </div>
       </div>
@@ -352,6 +386,12 @@ export default function Overview() {
           title="Days Left"
           value={daysRemaining}
           color="#3b82f6"
+        />
+
+        <StatCard
+          title="Days Studied"
+          value={daysStudied}
+          color="#14b8a6"
         />
       </div>
 
