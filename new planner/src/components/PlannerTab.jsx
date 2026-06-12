@@ -13,15 +13,13 @@ const subjectOptions = [
 
 export default function PlannerTab() {
   const [subjects, setSubjects] = useState([]);
-  const [logs, setLogs] = useState([]);
 
   const [name, setName] = useState("");
-  const [totalLectures, setTotalLectures] =
-    useState("");
+  const [totalLectures, setTotalLectures] = useState("");
   const [completedLectures, setCompletedLectures] =
     useState("");
-  const isMobile =
-  window.innerWidth < 768;
+
+  const isMobile = window.innerWidth < 768;
 
   useEffect(() => {
     const savedSubjects =
@@ -31,13 +29,7 @@ export default function PlannerTab() {
         )
       ) || [];
 
-    const savedLogs =
-      JSON.parse(
-        localStorage.getItem("dailyLogs")
-      ) || [];
-
     setSubjects(savedSubjects);
-    setLogs(savedLogs);
   }, []);
 
   useEffect(() => {
@@ -57,9 +49,7 @@ export default function PlannerTab() {
       );
 
     if (alreadyExists) {
-      alert(
-        "Subject already exists."
-      );
+      alert("Subject already exists.");
       return;
     }
 
@@ -93,6 +83,23 @@ export default function PlannerTab() {
     );
   };
 
+  const updateCompletedLectures = (
+    id,
+    value
+  ) => {
+    setSubjects(
+      subjects.map((subject) =>
+        subject.id === id
+          ? {
+              ...subject,
+              completedLectures:
+                Number(value) || 0,
+            }
+          : subject
+      )
+    );
+  };
+
   const totalPlannerLectures =
     subjects.reduce(
       (sum, subject) =>
@@ -105,32 +112,11 @@ export default function PlannerTab() {
 
   const totalCompletedLectures =
     subjects.reduce(
-      (sum, subject) => {
-        const dailyLogCompleted =
-          logs
-            .filter(
-              (log) =>
-                log.subject ===
-                subject.name
-            )
-            .reduce(
-              (
-                lectureSum,
-                log
-              ) =>
-                lectureSum +
-                Number(
-                  log.lectures || 0
-                ),
-              0
-            );
-
-        return (
-          sum +
-          subject.completedLectures +
-          dailyLogCompleted
-        );
-      },
+      (sum, subject) =>
+        sum +
+        Number(
+          subject.completedLectures || 0
+        ),
       0
     );
 
@@ -160,9 +146,9 @@ export default function PlannerTab() {
         style={{
           display: "grid",
           gridTemplateColumns:
-  isMobile
-    ? "1fr 1fr"
-    : "repeat(4,1fr)",
+            isMobile
+              ? "1fr 1fr"
+              : "repeat(4,1fr)",
           gap: 20,
           marginBottom: 24,
         }}
@@ -211,9 +197,9 @@ export default function PlannerTab() {
           style={{
             display: "grid",
             gridTemplateColumns:
-  isMobile
-    ? "1fr"
-    : "2fr 1fr 1fr auto",
+              isMobile
+                ? "1fr"
+                : "2fr 1fr 1fr auto",
             gap: 12,
           }}
         >
@@ -260,7 +246,7 @@ export default function PlannerTab() {
 
           <input
             type="number"
-            placeholder="Starting Completed"
+            placeholder="Completed"
             value={
               completedLectures
             }
@@ -295,28 +281,10 @@ export default function PlannerTab() {
 
       {subjects.map(
         (subject) => {
-          const dailyLogCompleted =
-            logs
-              .filter(
-                (log) =>
-                  log.subject ===
-                  subject.name
-              )
-              .reduce(
-                (
-                  sum,
-                  log
-                ) =>
-                  sum +
-                  Number(
-                    log.lectures || 0
-                  ),
-                0
-              );
-
           const completed =
-            subject.completedLectures +
-            dailyLogCompleted;
+            Number(
+              subject.completedLectures || 0
+            );
 
           const remaining =
             Math.max(
@@ -326,8 +294,7 @@ export default function PlannerTab() {
             );
 
           const progress =
-            subject.totalLectures >
-            0
+            subject.totalLectures > 0
               ? Math.round(
                   (completed /
                     subject.totalLectures) *
@@ -350,31 +317,31 @@ export default function PlannerTab() {
             >
               <div
                 style={{
-                  display:
-  "flex",
-flexDirection:
-  isMobile
-    ? "column"
-    : "row",
-justifyContent:
-  "space-between",
-alignItems:
-  isMobile
-    ? "stretch"
-    : "center",
+                  display: "flex",
+                  flexDirection:
+                    isMobile
+                      ? "column"
+                      : "row",
+                  justifyContent:
+                    "space-between",
+                  alignItems:
+                    isMobile
+                      ? "stretch"
+                      : "center",
                 }}
               >
-                <div>
+                <div
+                  style={{
+                    flex: 1,
+                  }}
+                >
                   <h3
                     style={{
                       margin: 0,
-                      color:
-                        "#000",
+                      color: "#000",
                     }}
                   >
-                    {
-                      subject.name
-                    }
+                    {subject.name}
                   </h3>
 
                   <div
@@ -392,33 +359,45 @@ alignItems:
 
                   <div
                     style={{
-                      marginTop: 4,
+                      marginTop: 12,
                       color:
                         "#6b7280",
                     }}
                   >
-                    Starting Completed:{" "}
-                    {
+                    Completed:
+                  </div>
+
+                  <input
+                    type="number"
+                    min="0"
+                    max={
+                      subject.totalLectures
+                    }
+                    value={
                       subject.completedLectures
                     }
-                  </div>
-
-                  <div
-                    style={{
-                      marginTop: 4,
-                      color:
-                        "#6b7280",
-                    }}
-                  >
-                    Daily Log:{" "}
-                    {
-                      dailyLogCompleted
+                    onChange={(e) =>
+                      updateCompletedLectures(
+                        subject.id,
+                        e.target.value
+                      )
                     }
-                  </div>
+                    style={{
+                      marginTop: 6,
+                      padding: 10,
+                      width:
+                        isMobile
+                          ? "100%"
+                          : 140,
+                      border:
+                        "1px solid #d1d5db",
+                      borderRadius: 8,
+                    }}
+                  />
 
                   <div
                     style={{
-                      marginTop: 4,
+                      marginTop: 10,
                       color:
                         "#6b7280",
                     }}
@@ -431,18 +410,7 @@ alignItems:
                     style={{
                       marginTop: 8,
                       fontWeight: 700,
-                      color:
-                        "#000",
-                    }}
-                  >
-                    Completed:{" "}
-                    {completed}
-                  </div>
-
-                  <div
-                    style={{
-                      marginTop: 8,
-                      fontWeight: 600,
+                      color: "#000",
                     }}
                   >
                     Progress:{" "}
@@ -460,12 +428,13 @@ alignItems:
                     background:
                       "#ef4444",
                     marginTop:
-  isMobile ? 12 : 0,
-
-width:
-  isMobile
-    ? "100%"
-    : "auto",
+                      isMobile
+                        ? 12
+                        : 0,
+                    width:
+                      isMobile
+                        ? "100%"
+                        : "auto",
                     color:
                       "white",
                     border:
@@ -500,8 +469,7 @@ width:
                       progress,
                       100
                     )}%`,
-                    height:
-                      "100%",
+                    height: "100%",
                     background:
                       "linear-gradient(90deg,#3b82f6,#8b5cf6)",
                   }}
